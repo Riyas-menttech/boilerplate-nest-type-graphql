@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserResolver } from './user.resolver';
+import { PostService } from './post.service';
+import { PostResolver } from './post.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from 'src/jwt.stratergy';
-import { PassportModule } from '@nestjs/passport';
+import { Post } from './entities/post.entity';
 import { UserAuthGuard } from 'src/guards/user.guard';
 import { JwtService } from 'src/JwtService';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Post]),
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
@@ -25,14 +24,7 @@ import { JwtService } from 'src/JwtService';
       // inject: [ConfigService],
     }),
   ],
-  providers: [
-    UserResolver,
-    UserService,
-    JwtStrategy,
-    JwtService,
-    UserAuthGuard,
-  ],
+  providers: [PostResolver, PostService, UserAuthGuard, JwtService],
   exports: [JwtModule, JwtService],
-  // exports:[UserService]
 })
-export class UserModule {}
+export class PostModule {}
